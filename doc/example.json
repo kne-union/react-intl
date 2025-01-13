@@ -1,0 +1,17 @@
+{
+  "isFull": false,
+  "list": [
+    {
+      "title": "这里填写示例标题",
+      "description": "这里填写示例说明",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_CreateIntl",
+          "packageName": "@kne/current-lib_create-intl",
+          "importStatement": "import * as _CreateIntl from \"@kne/create-intl\""
+        }
+      ]
+    }
+  ]
+}
