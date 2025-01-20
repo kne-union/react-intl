@@ -1,5 +1,5 @@
 {
-  "name": "@kne/create-intl",
+  "name": "@kne/react-intl",
   "version": "0.1.0",
   "description": "快捷地创建国际化中需要使用到的组件",
   "syntax": {
@@ -70,8 +70,7 @@
     ]
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "devDependencies": {
     "@kne/microbundle": "^0.15.5",
@@ -84,6 +83,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "react-intl": "^7.1.0"
+    "@kne/global-context": ">=1",
+    "react-intl": "^6.8.9"
   }
 }
