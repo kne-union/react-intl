@@ -1,5 +1,5 @@
 
-# create-intl
+# react-intl
 
 
 ### 描述
@@ -10,7 +10,7 @@
 ### 安装
 
 ```shell
-npm i --save @kne/create-intl
+npm i --save @kne/react-intl
 ```
 
 ### 示例
