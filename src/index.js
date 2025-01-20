@@ -14,7 +14,7 @@ const withIntlProvider = WrappedComponents =>
     );
   });
 
-export const createWithProvider = (defaultLocale, defaultMessage, namespace) => {
+export const createWithIntlProvider = (defaultLocale, defaultMessage, namespace) => {
   localeLoader(defaultLocale, defaultMessage, namespace);
   return withIntlProvider;
 };
