@@ -16,7 +16,16 @@ const withIntlProvider = WrappedComponents =>
 
 export const createWithIntlProvider = (defaultLocale, defaultMessage, namespace) => {
   localeLoader(defaultLocale, defaultMessage, namespace);
-  return withIntlProvider;
+  return WrappedComponents =>
+    forwardRef(({ locale: propsLocale, ...props }, ref) => {
+      const context = useContext();
+      const locale = propsLocale || context?.locale;
+      return (
+        <IntlProvider messages={message[locale][namespace || 'global']} locale={locale}>
+          <WrappedComponents {...props} ref={ref} />
+        </IntlProvider>
+      );
+    });
 };
 
 export * from 'react-intl';
