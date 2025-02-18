@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import localeLoader, { message } from './loader';
-import { IntlProvider, createIntl as createIntlBase } from 'react-intl';
+import { IntlProvider, createIntl as createIntlBase, useIntl } from 'react-intl';
 import { useContext } from '@kne/global-context';
 
 const withIntlProvider = WrappedComponents =>
@@ -16,12 +16,16 @@ const withIntlProvider = WrappedComponents =>
 
 export const createIntlProvider = (defaultLocale, defaultMessage, namespace) => {
   localeLoader(defaultLocale, defaultMessage, namespace);
+  const InnerComponent = ({ children }) => {
+    const intl = useIntl();
+    return children(intl);
+  };
   return ({ locale: propsLocale, children }) => {
     const context = useContext();
     const locale = propsLocale || context?.locale || defaultLocale || 'zh-CN';
     return (
       <IntlProvider messages={message[locale]?.[namespace || 'global']} locale={locale}>
-        {children}
+        {typeof children === 'function' ? <InnerComponent>{children}</InnerComponent> : children}
       </IntlProvider>
     );
   };
