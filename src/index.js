@@ -14,6 +14,19 @@ const withIntlProvider = WrappedComponents =>
     );
   });
 
+export const createIntlProvider = (defaultLocale, defaultMessage, namespace) => {
+  localeLoader(defaultLocale, defaultMessage, namespace);
+  return ({ locale: propsLocale, children }) => {
+    const context = useContext();
+    const locale = propsLocale || context?.locale || defaultLocale || 'zh-CN';
+    return (
+      <IntlProvider messages={message[locale]?.[namespace || 'global']} locale={locale}>
+        {children}
+      </IntlProvider>
+    );
+  };
+};
+
 export const createWithIntlProvider = (defaultLocale, defaultMessage, namespace) => {
   localeLoader(defaultLocale, defaultMessage, namespace);
   return WrappedComponents =>
