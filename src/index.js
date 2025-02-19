@@ -49,7 +49,7 @@ export * from 'react-intl';
 
 export const createIntl = ({ locale = 'zh-CN', message: propsMessage, namespace }) => {
   propsMessage && localeLoader(locale, propsMessage, namespace);
-  return createIntlBase({ locale, message });
+  return createIntlBase({ locale, messages: message[locale]?.[namespace || 'global'] });
 };
 
 export { localeLoader, IntlProvider };

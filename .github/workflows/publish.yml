@@ -10,5 +10,5 @@ jobs:
     uses: kne-union/actions/.github/workflows/publish-libs-workflow.yml@master
     secrets: inherit
     with:
-      package_name: '@kne/create-intl'
-      example_package_name: '@kne-components/create-intl'
+      package_name: '@kne/react-intl'
+      example_package_name: '@kne-components/react-intl'
