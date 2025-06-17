@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import localeLoader, { message } from './loader';
+import localeLoader, { message, messagesLoader } from './loader';
 import { IntlProvider, createIntl as createIntlBase, useIntl } from 'react-intl';
 import { useContext } from '@kne/global-context';
 
@@ -14,8 +14,18 @@ const withIntlProvider = WrappedComponents =>
     );
   });
 
-export const createIntlProvider = (defaultLocale, defaultMessage, namespace) => {
+const argsParse = (...args) => {
+  if (typeof args[0] === 'object' && typeof args[0].defaultLocale === 'string') {
+    return Object.assign({}, args[0]);
+  }
+
+  return { defaultLocale: args[0], defaultMessage: args[1], namespace: args[2] };
+};
+
+export const createIntlProvider = (...args) => {
+  const { defaultLocale, defaultMessage, namespace, messages } = argsParse(...args);
   defaultMessage && localeLoader(defaultLocale, defaultMessage, namespace);
+  messages && messagesLoader(messages, namespace);
   const InnerComponent = ({ children }) => {
     const intl = useIntl();
     return children(intl);
@@ -31,8 +41,10 @@ export const createIntlProvider = (defaultLocale, defaultMessage, namespace) => 
   };
 };
 
-export const createWithIntlProvider = (defaultLocale, defaultMessage, namespace) => {
+export const createWithIntlProvider = (...args) => {
+  const { defaultLocale, defaultMessage, namespace, messages } = argsParse(...args);
   defaultMessage && localeLoader(defaultLocale, defaultMessage, namespace);
+  messages && messagesLoader(messages, namespace);
   return WrappedComponents =>
     forwardRef(({ locale: propsLocale, ...props }, ref) => {
       const context = useContext();
