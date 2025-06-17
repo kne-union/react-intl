@@ -8,4 +8,13 @@ const loader = (locale, localeMessage, namespace) => {
   return message;
 };
 
+export const messagesLoader = (messages, namespace) => {
+  Object.keys(messages).forEach(locale => {
+    if (!message[locale]) {
+      message[locale] = {};
+    }
+    message[locale][namespace || 'global'] = Object.assign({}, message[locale][namespace || 'global'], messages[locale]);
+  });
+};
+
 export default loader;

@@ -7,9 +7,13 @@
       "code": "./base.js",
       "scope": [
         {
-          "name": "_CreateIntl",
-          "packageName": "@kne/current-lib_create-intl",
-          "importStatement": "import * as _CreateIntl from \"@kne/create-intl\""
+          "name": "_ReactIntl",
+          "packageName": "@kne/current-lib_react-intl",
+          "importStatement": "import * as _ReactIntl from \"@kne/react-intl\""
+        },
+        {
+          "name": "antd",
+          "packageName": "antd"
         }
       ]
     }
