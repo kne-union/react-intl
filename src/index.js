@@ -15,7 +15,7 @@ const withIntlProvider = WrappedComponents =>
   });
 
 export const createIntlProvider = (defaultLocale, defaultMessage, namespace) => {
-  localeLoader(defaultLocale, defaultMessage, namespace);
+  defaultMessage && localeLoader(defaultLocale, defaultMessage, namespace);
   const InnerComponent = ({ children }) => {
     const intl = useIntl();
     return children(intl);
@@ -32,7 +32,7 @@ export const createIntlProvider = (defaultLocale, defaultMessage, namespace) => 
 };
 
 export const createWithIntlProvider = (defaultLocale, defaultMessage, namespace) => {
-  localeLoader(defaultLocale, defaultMessage, namespace);
+  defaultMessage && localeLoader(defaultLocale, defaultMessage, namespace);
   return WrappedComponents =>
     forwardRef(({ locale: propsLocale, ...props }, ref) => {
       const context = useContext();
