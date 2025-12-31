@@ -1,274 +1,100 @@
-本文档详细介绍了@kne/react-intl提供的API，包括函数、组件和钩子。
+### createIntlProvider
+创建国际化 Provider 组件，为子组件提供 i18n 上下文。支持配置默认语言、翻译消息和命名空间，返回的 Provider 组件可以动态切换语言。
 
-### 核心API
+#### 配置参数
+| 参数名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| args | string \| object \| array | 是 | - | 支持三种格式：(1) 字符串：默认语言标识 (2) 对象：包含 defaultLocale、defaultMessage、namespace、messages (3) 数组：[defaultLocale, defaultMessage, namespace] |
 
-#### createIntl
+#### Provider 属性
+| 属性名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| locale | string | 否 | zh-CN | 当前语言标识，优先级高于默认值 |
+| children | ReactNode \| function | 是 | - | 子组件或渲染函数，函数形式接收 intl 对象 |
 
-创建国际化相关的组件和hooks，可以自定义获取locale的方法。
+### createWithIntlProvider
+创建高阶组件，为被包装组件添加国际化能力。返回的 HOC 函数接受组件并返回带有国际化上下文的组件。
 
-| 参数 | 类型 | 必填 | 默认值 | 描述 |
-|------|------|------|--------|------|
-| options | Object | 否 | {} | 配置选项 |
-| options.getLocale | Function | 否 | 从context获取 | 自定义获取locale的函数 |
+#### 配置参数
+| 参数名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| args | string \| object \| array | 是 | - | 支持三种格式：(1) 字符串：默认语言标识 (2) 对象：包含 defaultLocale、defaultMessage、namespace、messages (3) 数组：[defaultLocale, defaultMessage, namespace] |
 
-**返回值**：
+#### HOC 返回组件属性
+| 属性名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| locale | string | 否 | zh-CN | 当前语言标识，优先级高于默认值 |
 
-| 属性 | 类型 | 描述 |
+### createIntl
+创建国际化实例，用于在非组件环境中使用 i18n 功能，例如在工具函数、API 调用等场景。
+
+#### 配置参数
+| 参数名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| locale | string | 否 | zh-CN | 语言标识 |
+| message | object | 否 | - | 翻译消息对象 |
+| namespace | string | 否 | global | 命名空间 |
+
+#### 返回值
+| 类型 | 说明 |
+|------|------|
+| IntlShape | react-intl 的国际化实例对象 |
+
+### localeLoader
+加载指定语言的翻译消息到指定命名空间。
+
+#### 方法参数
+| 参数名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| locale | string | 是 | - | 语言标识，如 zh-CN、en-US |
+| defaultMessage | object | 是 | - | 翻译消息对象，key 为消息 ID |
+| namespace | string | 否 | global | 命名空间，用于隔离不同模块的翻译 |
+
+#### 返回值
+| 类型 | 说明 |
+|------|------|
+| object | 更新后的消息对象 |
+
+### messagesLoader
+批量加载多语言消息对象，支持同时加载多种语言的翻译内容。
+
+#### 方法参数
+| 参数名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| messages | object | 是 | - | 多语言消息对象，key 为语言标识，value 为该语言的翻译消息 |
+| namespace | string | 否 | global | 命名空间，用于隔离不同模块的翻译 |
+
+### message
+存储所有已加载的翻译消息的容器对象，结构为多层嵌套对象，按语言和命名空间组织。
+
+#### 数据结构
+| 层级 | 类型 | 说明 |
 |------|------|------|
-| IntlProvider | Component | 国际化Provider组件 |
-| useIntl | Hook | 获取intl对象的hook |
-| FormattedDate | Component | 格式化日期组件 |
-| FormattedTime | Component | 格式化时间组件 |
-| FormattedNumber | Component | 格式化数字组件 |
-| FormattedPlural | Component | 格式化复数组件 |
-| FormattedMessage | Component | 格式化消息组件 |
-| FormattedHTMLMessage | Component | 格式化HTML消息组件 |
-| FormattedRelativeTime | Component | 格式化相对时间组件 |
+| 第一层 key | string | 语言标识，如 zh-CN、en-US |
+| 第二层 key | string | 命名空间，如 global、user |
+| 第三层 | object | 翻译消息键值对 |
 
-**示例**：
+### IntlProvider
+react-intl 的国际化 Provider 组件，提供完整的国际化上下文支持。
 
-```jsx
-import {createIntl} from '@kne/react-intl';
-import {createContext} from '@kne/global-context';
+#### 属性说明
+| 属性名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| locale | string | 是 | - | 当前语言 |
+| messages | object | 是 | - | 翻译消息对象 |
+| children | ReactNode | 是 | - | 子组件 |
 
-const {useContext} = createContext();
+### 默认导出
+默认导出为 createIntl 函数，用于创建国际化实例。
 
-const {IntlProvider, useIntl, FormattedMessage} = createIntl({
-  getLocale: () => {
-    const [context] = useContext();
-    return context.locale;
-  }
-});
-```
+#### 配置参数
+| 参数名 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| locale | string | 否 | zh-CN | 语言标识 |
+| message | object | 否 | - | 翻译消息对象 |
+| namespace | string | 否 | global | 命名空间 |
 
-#### createIntlProvider
-
-创建国际化Provider组件，支持多种调用方式。
-
-**方式1：使用对象配置**
-
-| 参数 | 类型 | 必填 | 默认值 | 描述 |
-|------|------|------|--------|------|
-| options | Object | 是 | - | Provider的配置选项 |
-| options.locale | String | 否 | 从context获取 | 当前语言 |
-| options.defaultLocale | String | 否 | 'zh-CN' | 默认语言 |
-| options.messages | Object | 否 | {} | 国际化消息对象 |
-| options.namespace | String | 否 | 'global' | 命名空间 |
-
-**方式2：使用参数配置**
-
-| 参数 | 类型 | 必填 | 默认值 | 描述 |
-|------|------|------|--------|------|
-| locale | String | 是 | - | 当前语言 |
-| messages | Object | 是 | - | 国际化消息对象 |
-| namespace | String | 否 | 'global' | 命名空间 |
-
-**返回值**：
-
-| 类型 | 描述 |
+#### 返回值
+| 类型 | 说明 |
 |------|------|
-| Component | 国际化Provider组件，支持render props获取intl实例 |
-
-**示例**：
-
-```jsx
-// 方式1：使用对象配置
-import {createIntlProvider} from '@kne/react-intl';
-
-const IntlProvider = createIntlProvider({
-  defaultLocale: 'zh-CN',
-  messages: {
-    'zh-CN': {
-      hello: '你好，世界！'
-    },
-    'en-US': {
-      hello: 'Hello, world!'
-    }
-  },
-  namespace: 'app'
-});
-
-// 方式2：使用参数配置
-const IntlProvider = createIntlProvider('zh-CN', {
-  hello: '你好，世界！'
-}, 'app');
-
-// 在应用中使用
-const App = () => (
-  <IntlProvider>
-    <YourApp />
-  </IntlProvider>
-);
-
-// 使用render props获取intl实例
-const App = () => (
-  <IntlProvider>
-    {(intl) => (
-      <div>{intl.formatMessage({id: 'hello'})}</div>
-    )}
-  </IntlProvider>
-);
-```
-
-#### createWithIntlProvider
-
-创建一个高阶组件，用于包装组件并提供国际化功能。
-
-| 参数 | 类型 | 必填 | 默认值 | 描述 |
-|------|------|------|--------|------|
-| options | Object | 是 | - | Provider的配置选项 |
-| options.locale | String | 否 | 从context获取 | 当前语言 |
-| options.defaultLocale | String | 否 | 'zh-CN' | 默认语言 |
-| options.defaultMessage | Object | 否 | {} | 默认消息对象 |
-| options.namespace | String | 否 | 'global' | 命名空间 |
-
-**返回值**：
-
-| 类型 | 描述 |
-|------|------|
-| Function | 高阶组件函数，接收一个组件并返回包装后的组件 |
-
-**示例**：
-
-```jsx
-import {createWithIntlProvider} from '@kne/react-intl';
-
-const withIntl = createWithIntlProvider({
-  defaultLocale: 'zh-CN',
-  defaultMessage: {
-    hello: '你好，世界！'
-  },
-  namespace: 'app'
-});
-
-// 包装组件
-const WrappedComponent = withIntl(YourComponent);
-
-// 使用包装后的组件
-const App = () => <WrappedComponent />;
-```
-
-#### localeLoader
-
-加载单个语言的国际化消息。
-
-| 参数 | 类型 | 必填 | 默认值 | 描述 |
-|------|------|------|--------|------|
-| locale | String | 是 | - | 语言代码 |
-| localeMessage | Object | 是 | - | 消息对象 |
-| namespace | String | 否 | 'global' | 命名空间 |
-
-**返回值**：
-
-| 类型 | 描述 |
-|------|------|
-| Object | 更新后的完整消息对象 |
-
-**示例**：
-
-```jsx
-import {localeLoader} from '@kne/react-intl';
-
-// 加载中文消息
-localeLoader('zh-CN', {
-  welcome: '欢迎使用我们的应用'
-}, 'app');
-
-// 加载英文消息
-localeLoader('en-US', {
-  welcome: 'Welcome to our application'
-}, 'app');
-```
-
-#### messagesLoader
-
-批量加载多语言的国际化消息。
-
-| 参数 | 类型 | 必填 | 默认值 | 描述 |
-|------|------|------|--------|------|
-| messages | Object | 是 | - | 多语言消息对象，格式为 {locale: messages} |
-| namespace | String | 否 | 'global' | 命名空间 |
-
-**返回值**：无
-
-**示例**：
-
-```jsx
-import {messagesLoader} from '@kne/react-intl';
-
-// 批量加载多语言消息
-messagesLoader({
-  'zh-CN': {
-    welcome: '欢迎使用',
-    goodbye: '再见'
-  },
-  'en-US': {
-    welcome: 'Welcome',
-    goodbye: 'Goodbye'
-  }
-}, 'app');
-```
-
-### 从react-intl导出的API
-
-以下API直接从react-intl导出，详细用法请参考[react-intl官方文档](https://formatjs.io/docs/react-intl/)。
-
-| API | 类型 | 描述 |
-|-----|------|------|
-| IntlProvider | Component | 国际化Provider组件 |
-| FormattedDate | Component | 格式化日期组件 |
-| FormattedTime | Component | 格式化时间组件 |
-| FormattedNumber | Component | 格式化数字组件 |
-| FormattedPlural | Component | 格式化复数组件 |
-| FormattedMessage | Component | 格式化消息组件 |
-| FormattedHTMLMessage | Component | 格式化HTML消息组件 |
-| FormattedRelativeTime | Component | 格式化相对时间组件 |
-| useIntl | Hook | 获取intl对象的hook |
-| injectIntl | HOC | 注入intl对象的高阶组件 |
-| defineMessages | Function | 定义消息的辅助函数 |
-| createIntl | Function | 创建intl对象的函数 |
-
-### 内部API
-
-#### message
-
-存储所有已加载的国际化消息的对象。
-
-**结构**：
-
-```javascript
-{
-  [locale: string]: {
-    [namespace: string]: {
-      [messageId: string]: string
-    }
-  }
-}
-```
-
-**示例**：
-
-```javascript
-// 内部结构示例
-{
-  'zh-CN': {
-    'global': {
-      'hello': '你好'
-    },
-    'app': {
-      'welcome': '欢迎使用'
-    }
-  },
-  'en-US': {
-    'global': {
-      'hello': 'Hello'
-    },
-    'app': {
-      'welcome': 'Welcome'
-    }
-  }
-}
-```
-
-**注意**：此对象通常不需要直接访问，应通过提供的API函数进行操作。
-###
+| IntlShape | react-intl 的国际化实例对象 |

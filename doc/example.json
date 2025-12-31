@@ -2,8 +2,8 @@
   "isFull": false,
   "list": [
     {
-      "title": "这里填写示例标题",
-      "description": "这里填写示例说明",
+      "title": "基础国际化",
+      "description": "使用createIntlProvider创建国际化Provider，支持语言切换",
       "code": "./base.js",
       "scope": [
         {

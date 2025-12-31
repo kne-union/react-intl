@@ -1,0 +1,115 @@
+{
+  "description": "React国际化组件库，提供便捷的国际化Provider和工具函数",
+  "modules": {
+    "createIntlProvider": {
+      "description": "创建国际化Provider组件，为子组件提供i18n上下文",
+      "type": "function",
+      "parameters": [
+        {
+          "name": "args",
+          "description": "配置参数，支持默认语言、默认消息、命名空间或多语言消息对象",
+          "type": "string|object|array"
+        }
+      ],
+      "returns": "function"
+    },
+    "createWithIntlProvider": {
+      "description": "创建高阶组件，为被包装组件添加国际化能力",
+      "type": "function",
+      "parameters": [
+        {
+          "name": "args",
+          "description": "配置参数，支持默认语言、默认消息、命名空间或多语言消息对象",
+          "type": "string|object|array"
+        }
+      ],
+      "returns": "function"
+    },
+    "createIntl": {
+      "description": "创建国际化实例，用于在非组件环境中使用i18n功能",
+      "type": "function",
+      "parameters": [
+        {
+          "name": "options",
+          "description": "国际化配置选项",
+          "type": "object"
+        }
+      ],
+      "returns": "object"
+    },
+    "localeLoader": {
+      "description": "加载指定语言的翻译消息",
+      "type": "function",
+      "parameters": [
+        {
+          "name": "locale",
+          "description": "语言标识，如zh-CN、en-US",
+          "type": "string"
+        },
+        {
+          "name": "defaultMessage",
+          "description": "翻译消息对象",
+          "type": "object"
+        },
+        {
+          "name": "namespace",
+          "description": "命名空间，默认为global",
+          "type": "string"
+        }
+      ],
+      "returns": "object"
+    },
+    "messagesLoader": {
+      "description": "批量加载多语言消息对象",
+      "type": "function",
+      "parameters": [
+        {
+          "name": "messages",
+          "description": "多语言消息对象，key为语言标识",
+          "type": "object"
+        },
+        {
+          "name": "namespace",
+          "description": "命名空间，默认为global",
+          "type": "string"
+        }
+      ],
+      "returns": "void"
+    },
+    "message": {
+      "description": "存储所有已加载的翻译消息的容器对象",
+      "type": "object",
+      "properties": {}
+    },
+    "IntlProvider": {
+      "description": "react-intl的国际化Provider组件",
+      "type": "ReactNode",
+      "props": {
+        "locale": {
+          "description": "当前语言",
+          "type": "string"
+        },
+        "messages": {
+          "description": "翻译消息对象",
+          "type": "object"
+        },
+        "children": {
+          "description": "子组件",
+          "type": "ReactNode"
+        }
+      }
+    },
+    "default": {
+      "description": "默认导出，同createIntl函数",
+      "type": "function",
+      "parameters": [
+        {
+          "name": "options",
+          "description": "国际化配置选项",
+          "type": "object"
+        }
+      ],
+      "returns": "object"
+    }
+  }
+}
