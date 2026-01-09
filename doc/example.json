@@ -2,8 +2,8 @@
   "isFull": false,
   "list": [
     {
-      "title": "基础国际化",
-      "description": "使用createIntlProvider创建国际化Provider，支持语言切换",
+      "title": "基础语言切换",
+      "description": "实现中英文切换功能，通过下拉选择器实时更新页面语言",
       "code": "./base.js",
       "scope": [
         {
@@ -14,6 +14,26 @@
         {
           "name": "antd",
           "packageName": "antd"
+        }
+      ]
+    },
+    {
+      "title": "远程加载语言",
+      "description": "支持API远程动态加载语言包，扩展多语言支持至日语和德语",
+      "code": "./remote-load-lang.js",
+      "scope": [
+        {
+          "name": "_ReactIntl",
+          "packageName": "@kne/current-lib_react-intl",
+          "importStatement": "import * as _ReactIntl from \"@kne/react-intl\""
+        },
+        {
+          "name": "antd",
+          "packageName": "antd"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
         }
       ]
     }
