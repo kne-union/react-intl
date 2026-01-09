@@ -24,6 +24,9 @@ npm i --save @kne/react-intl
 
 技术亮点在于提供了多种创建方式，createIntlProvider 用于创建完整的国际化上下文，createWithIntlProvider 可以为单个组件注入国际化能力，createIntl 则适用于非组件环境的国际化场景。消息加载器支持单个和批量加载，命名空间机制确保不同模块的翻译内容互不干扰。
 
+***远程加载语言包***
+
+远程加载语言包功能支持通过 API 动态获取翻译内容，当本地缺少某语言的翻译时自动触发远程请求。提供智能缓存机制，避免重复请求相同的语言包，适用于按需加载、动态扩展语言支持、分包优化等场景。开发者可通过配置全局上下文的 localeMessage 接口，灵活集成后端翻译服务，实现运营人员动态管理翻译内容，无需重新部署应用。
 
 ### 示例
 
@@ -40,8 +43,8 @@ npm i --save @kne/react-intl
 
 #### 示例代码
 
-- 基础国际化
-- 使用createIntlProvider创建国际化Provider，支持语言切换
+- 基础语言切换
+- 实现中英文切换功能，通过下拉选择器实时更新页面语言
 - _ReactIntl(@kne/current-lib_react-intl)[import * as _ReactIntl from "@kne/react-intl"],antd(antd)
 
 ```jsx
@@ -80,6 +83,81 @@ const BaseExample = () => {
     </IntlProvider>
   );
 };
+
+render(<BaseExample />);
+
+```
+
+- 远程加载语言
+- 支持API远程动态加载语言包，扩展多语言支持至日语和德语
+- _ReactIntl(@kne/current-lib_react-intl)[import * as _ReactIntl from "@kne/react-intl"],antd(antd),remoteLoader(@kne/remote-loader)
+
+```jsx
+const { createIntlProvider, FormattedMessage } = _ReactIntl;
+const { Select, Flex } = antd;
+const { useState } = React;
+const { createWithRemoteLoader } = remoteLoader;
+
+const IntlProvider = createIntlProvider({
+  defaultLocale: 'zh-CN',
+  namespace: 'test',
+  messages: {
+    'zh-CN': {
+      hello: '你好，世界！',
+      remove: '删除'
+    },
+    'en-US': {
+      hello: 'Hello, world!',
+      remove: 'remove'
+    }
+  }
+});
+
+const BaseExample = createWithRemoteLoader({
+  modules: ['components-core:Global@PureGlobal']
+})(({ remoteModules }) => {
+  const [PureGlobal] = remoteModules;
+  const [locale, setLocale] = useState('zh-CN');
+  return (
+    <PureGlobal
+      preset={{
+        apis: {
+          localeMessage: {
+            loader: ({ data }) => {
+              console.log('params', data);
+              const lang = {
+                'ja-JP': {
+                  hello: 'こんにちは、世界！'
+                },
+                'de-DE': {
+                  hello: 'Hallo, Welt!'
+                }
+              };
+
+              return Promise.resolve(lang[data.locale]);
+            }
+          }
+        }
+      }}>
+      <IntlProvider locale={locale}>
+        <Flex gap={10}>
+          <Select
+            placeholder="请选择语言"
+            value={locale}
+            onChange={setLocale}
+            options={[
+              { value: 'zh-CN', label: '中文' },
+              { value: 'en-US', label: 'English' },
+              { value: 'ja-JP', label: '日本語' },
+              { value: 'de-DE', label: 'Deutsch' }
+            ]}
+          />
+          <FormattedMessage id="hello" />
+        </Flex>
+      </IntlProvider>
+    </PureGlobal>
+  );
+});
 
 render(<BaseExample />);
 
