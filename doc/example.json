@@ -36,6 +36,22 @@
           "packageName": "@kne/remote-loader"
         }
       ]
+    },
+    {
+      "title": "多层级显示",
+      "description": "父子组件嵌套使用不同语言包，子组件可共享父组件国际化资源",
+      "code": "./multi-level.js",
+      "scope": [
+        {
+          "name": "_ReactIntl",
+          "packageName": "@kne/current-lib_react-intl",
+          "importStatement": "import * as _ReactIntl from \"@kne/react-intl\""
+        },
+        {
+          "name": "antd",
+          "packageName": "antd"
+        }
+      ]
     }
   ]
 }
