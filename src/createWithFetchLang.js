@@ -1,8 +1,9 @@
 import Fetch from '@kne/react-fetch';
 import { useGlobalValue, usePreset } from '@kne/global-context';
 import localeLoader, { messagesLoader, message } from './loader';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider, useIntl } from 'react-intl';
 import React, { forwardRef } from 'react';
+import { Provider as MessageProvider, useContext as useMessageContext } from './contex';
 
 const argsParse = (...args) => {
   if (typeof args[0] === 'object' && typeof args[0].defaultLocale === 'string') {
@@ -41,10 +42,13 @@ const createWithFetchLang = (...args) => {
           />
         );
       }
-
+      const prevMessage = useMessageContext();
+      const currentMessage = Object.assign({}, prevMessage, messages);
       return (
-        <IntlProvider messages={messages} locale={locale}>
-          <WrappedComponents {...props} ref={ref} />
+        <IntlProvider messages={currentMessage} locale={locale}>
+          <MessageProvider value={currentMessage}>
+            <WrappedComponents {...props} ref={ref} />
+          </MessageProvider>
         </IntlProvider>
       );
     });
