@@ -218,7 +218,7 @@ const BaseExample = () => {
         />
         <FormattedMessage id="hello" />
         <div>----------------</div>
-        <ChildrenComponent locale={locale} />
+        <ChildrenComponent />
       </Flex>
     </IntlProvider>
   );
