@@ -46,15 +46,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kne-union/create-intl.git"
+    "url": "https://github.com/kne-union/react-intl.git"
   },
   "keywords": [],
   "author": "linzp",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kne-union/create-intl/issues"
+    "url": "https://github.com/kne-union/react-intl/issues"
   },
-  "homepage": "https://github.com/kne-union/create-intl",
+  "homepage": "https://github.com/kne-union/react-intl",
   "eslintConfig": {
     "extends": [
       "react-app",
