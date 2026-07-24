@@ -28,6 +28,13 @@ const BaseExample = createWithRemoteLoader({
       preset={{
         apis: {
           localeMessage: {
+            // local-first（默认）：本地无当前语言包时才请求
+            // remote-first：始终请求远程，远程覆盖本地同名字段
+            // off：不请求远程
+            // url 模式响应须为扁平 { [id]: text }，例如：
+            // url: '/api/v1/intl-admin/lang-lib/messages',
+            // method: 'GET',
+            strategy: 'local-first',
             loader: ({ data }) => {
               console.log('params', data);
               const lang = {
@@ -43,7 +50,8 @@ const BaseExample = createWithRemoteLoader({
             }
           }
         }
-      }}>
+      }}
+    >
       <IntlProvider locale={locale}>
         <Flex gap={10}>
           <Select
