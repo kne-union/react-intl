@@ -26,5 +26,6 @@ export const createIntl = ({ locale = 'zh-CN', message: propsMessage, namespace 
 };
 
 export { localeLoader, IntlProvider };
+export { resolveLocaleMessageStrategy, shouldFetchLocaleMessage, LOCALE_MESSAGE_STRATEGIES } from './intlUtils';
 
 export default createIntl;

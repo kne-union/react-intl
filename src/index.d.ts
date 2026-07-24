@@ -51,6 +51,23 @@ export interface CreateIntlOptions {
 // createIntl 返回值类型
 export declare const createIntl: (options: CreateIntlOptions) => IntlShape;
 
+/** 远程语言包加载策略 */
+export type LocaleMessageStrategy = 'remote-first' | 'local-first' | 'off';
+
+export declare const LOCALE_MESSAGE_STRATEGIES: readonly LocaleMessageStrategy[];
+
+export declare const resolveLocaleMessageStrategy: (localeMessageApi?: { strategy?: string } | null) => LocaleMessageStrategy;
+
+export declare const shouldFetchLocaleMessage: (options?: { strategy?: LocaleMessageStrategy; hasApi?: boolean; hasLocal?: boolean; hasDefaultLocal?: boolean }) => boolean;
+
+/** preset.apis.localeMessage 配置（strategy 会在请求前剥离，不传给 Fetch） */
+export interface LocaleMessageApiConfig {
+  strategy?: LocaleMessageStrategy;
+  url?: string;
+  loader?: (...args: any[]) => any;
+  [key: string]: any;
+}
+
 // 默认导出
 declare const defaultExport: typeof createIntl;
 export default defaultExport;

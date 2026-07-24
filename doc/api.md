@@ -84,6 +84,38 @@ react-intl 的国际化 Provider 组件，提供完整的国际化上下文支�
 | messages | object | 是 | - | 翻译消息对象 |
 | children | ReactNode | 是 | - | 子组件 |
 
+### apis.localeMessage（preset 远程语言包）
+通过全局 `preset.apis.localeMessage` 配置远程语言包接口（`@kne/react-fetch` 配置），并可用 `strategy` 控制加载策略。
+
+```js
+preset={{
+  apis: {
+    localeMessage: {
+      url: '/api/...', // 或 loader
+      strategy: 'local-first' // 'remote-first' | 'local-first' | 'off'
+    }
+  }
+}}
+```
+
+| strategy | 说明 |
+|----------|------|
+| `remote-first` | 配置了接口则始终请求远程；与本地合并，远程覆盖同名字段；远程空则回退本地 |
+| `local-first` | **默认**。仅当前语言本地无包、且存在默认语言包时请求远程 |
+| `off` | 永不请求远程（即便配置了接口） |
+
+未配置 `apis.localeMessage` 时不发起远程请求。未写 `strategy` 时按 `local-first` 处理。
+
+**响应格式（必读）**：接口经 `@kne/react-fetch` 的 `transformResponse` 后，`render` 收到的 `data`（即 `results`）必须是扁平文案对象：
+
+```js
+{ "Hello": "你好", "Save": "保存" }
+```
+
+不要返回 `pageData`、`.i18n` 文件内容等结构。请求时会自动带上 query/body：`locale`、`namespace`（当前 withLocale 命名空间，缺省 `global`）。
+
+推荐后端接口：`GET /api/v1/intl-admin/lang-lib/messages?locale=zh-CN&namespace=global`。
+
 ### 默认导出
 默认导出为 createIntl 函数，用于创建国际化实例。
 
